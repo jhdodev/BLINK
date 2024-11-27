@@ -1,7 +1,14 @@
 class FollowModel {
+  // 팔로우 아이디
   final String id;
+
+  // 팔로우한 아이디
   final String followerId;
+
+  // 팔로우 당한 아이디
   final String followedId;
+
+  // 생성일
   final DateTime createdAt;
 
   FollowModel({
