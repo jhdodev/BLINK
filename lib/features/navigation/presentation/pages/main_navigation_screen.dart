@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/navigation_bloc.dart';
-import '../../../home/presentation/pages/home_screen.dart';
-import '../../../friends/presentation/pages/friends_screen.dart';
-import '../../../upload/presentation/pages/upload_screen.dart';
-import '../../../notifications/presentation/pages/notifications_screen.dart';
-import '../../../profile/presentation/pages/profile_screen.dart';
+import 'package:blink/features/navigation/presentation/bloc/navigation_bloc.dart';
+import 'package:blink/features/home/presentation/screens/home_screen.dart';
+import 'package:blink/features/friends/presentation/screens/friends_screen.dart';
+import 'package:blink/features/upload/presentation/screens/upload_screen.dart';
+import 'package:blink/features/notifications/presentation/screens/notifications_screen.dart';
+import 'package:blink/features/profile/presentation/screens/profile_screen.dart';
 
 class MainNavigationScreen extends StatelessWidget {
   const MainNavigationScreen({super.key});
