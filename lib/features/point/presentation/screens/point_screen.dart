@@ -19,7 +19,7 @@ class PointScreen extends StatefulWidget {
 class _PointScreenState extends State<PointScreen> {
   final AuthRepository _authRepository = AuthRepository();
   Timer? _wateringTimer;
-  int _currentWaterAmount = 10;
+  int _currentWaterAmount = 1;
   bool _isPressing = false;
 
   @override
@@ -59,7 +59,7 @@ class _PointScreenState extends State<PointScreen> {
             .add(WaterTreeEvent(userId, _currentWaterAmount));
 
         setState(() {
-          _currentWaterAmount += 5;
+          _currentWaterAmount += _currentWaterAmount;
         });
       }
     });
@@ -71,7 +71,7 @@ class _PointScreenState extends State<PointScreen> {
       _wateringTimer = null;
     }
     setState(() {
-      _currentWaterAmount = 10;
+      _currentWaterAmount = 1;
       _isPressing = false;
     });
   }
@@ -120,7 +120,39 @@ class _PointScreenState extends State<PointScreen> {
         child: BlocBuilder<PointBloc, PointState>(
           builder: (context, state) {
             if (state is PointsLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 30),
+                    const Text(
+                      '로그인 정보를 불러올 수 없습니다.',
+                      style: TextStyle(color: AppColors.textWhite),
+                    ),
+                    const Text(
+                      '아래 버튼을 눌러주세요',
+                      style: TextStyle(color: AppColors.textWhite),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final userId = await BlinkSharedPreference().getCurrentUserId();
+                        if (userId != 'not defined user') {
+                          context.read<PointBloc>().add(LoadPoints(userId));
+                        } else {
+                          _showDialog("로그인 필요", "로그인 정보가 없습니다. 다시 로그인해주세요.");
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryColor,
+                        foregroundColor: AppColors.textWhite,
+                      ),
+                      child: const Text("로그인 정보 불러오기"),
+                    ),
+                  ],
+                ),
+              );
             }
 
             if (state is PointError) {
@@ -230,7 +262,7 @@ class _PointScreenState extends State<PointScreen> {
             }
 
             // 상태가 PointsAndTreeUpdated가 아닌 경우
-            return const Center(child: CircularProgressIndicator());
+            return const CircularProgressIndicator();
           },
         ),
       ),
