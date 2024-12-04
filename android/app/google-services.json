@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "623164352186",
+    "project_id": "blink-app-8d6ca",
+    "storage_bucket": "blink-app-8d6ca.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623164352186:android:9c63de8750e70907b88483",
+        "android_client_info": {
+          "package_name": "com.blink.blink"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN_yjmPfbw1D4hWBFvY2KPckfsSUi2rDk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
