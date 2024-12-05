@@ -1,3 +1,4 @@
+import 'package:blink/features/search/data/datasources/local/search_local_datasource.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:blink/core/theme/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final BehaviorSubject<List<dynamic>> _popularStreamController = BehaviorSubject<List<dynamic>>();
 
@@ -19,6 +21,7 @@ class SearchedScreen extends StatefulWidget {
 
 class _SearchedScreenState extends State<SearchedScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final SearchLocalDataSource localDataSource = SearchLocalDataSource();
   late String currentQuery;
 
   @override
@@ -27,6 +30,8 @@ class _SearchedScreenState extends State<SearchedScreen> {
     currentQuery = widget.query;
     _searchController.text = currentQuery;
     _initializePopularStream(currentQuery);
+
+    _saveSearchQuery(currentQuery);
   }
 
   void _initializePopularStream(String query) {
@@ -59,13 +64,31 @@ class _SearchedScreenState extends State<SearchedScreen> {
     });
   }
 
-  void _onSearch(String query) {
+  void _onSearch(String query) async {
     if (query.isNotEmpty) {
       setState(() {
         currentQuery = query;
         _initializePopularStream(query);
       });
     }
+
+    await _saveSearchQuery(query);
+  }
+
+  Future<void> _saveSearchQuery(String query) async {
+    final prefs = await SharedPreferences.getInstance();
+    final searches = await localDataSource.fetchRecentSearches();
+
+    if (searches.contains(query)) {
+      searches.remove(query);
+    }
+    searches.insert(0, query);
+
+    if (searches.length > 5) {
+      searches.removeLast();
+    }
+
+    await prefs.setStringList(SearchLocalDataSource.recentSearchesKey, searches);
   }
 
   @override
