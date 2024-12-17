@@ -44,3 +44,4 @@ app.*.map.json
 
 # Gradle files
 android/gradle.properties
+**/firebase_options.dart
